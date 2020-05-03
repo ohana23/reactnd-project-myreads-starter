@@ -10,38 +10,38 @@ class BooksApp extends Component {
   }
 
   // Extract only necessary data from returned api books to create a new array.
-  async createBooksArray() {
-    let allBooks = []
+//   async createBooksArray() {
+//     let allBooks = []
 
-    let response = await BooksAPI.getAll()
+//     let response = await BooksAPI.getAll()
 
-    response.forEach(b => {
-      allBooks.push({
-        title: b.title,
-        authors: b.authors,
-        coverImage: b.imageLinks.smallThumbnail,
-        shelf: b.shelf
-      })
-    })
+//     response.forEach(b => {
+//       allBooks.push({
+//         title: b.title,
+//         authors: b.authors,
+//         coverImage: b.imageLinks.smallThumbnail,
+//         shelf: b.shelf
+//       })
+//     })
 
-    return allBooks
-  }
-
-
-  async componentDidMount() {
-    let books = await this.createBooksArray()
-
-    this.setState({
-      allBooks: books
-    })
-  }
-
-
-//   componentDidMount() {
-//     BooksAPI.getAll().then(allBooks => 
-//         this.setState({ allBooks })
-//     );
+//     return allBooks
 //   }
+
+
+//   async componentDidMount() {
+//     let books = await this.createBooksArray()
+
+//     this.setState({
+//       allBooks: books
+//     })
+//   }
+
+
+  componentDidMount() {
+    BooksAPI.getAll().then(allBooks => 
+        this.setState({ allBooks })
+    );
+  }
 
   // TODO: I somehow have to use the api to update the state (I think).
   // Not sure how a spread operator is supposed to handle that.
@@ -63,15 +63,11 @@ class BooksApp extends Component {
 //     })
 //   }
 
-  handleShelfChange = value => {
-    console.log(this.state.allBooks);
-
-    let bookToMoveTitle = value[0];
-    let targetShelf = value[1];
+  handleShelfChange = (bookToMove, targetShelf) => {
     let books = this.state.allBooks;
 
     // Find the index of the book to update...
-    let bookIndex = books.findIndex(b => b.title === bookToMoveTitle )
+    let bookIndex = books.findIndex(b => b.id === bookToMove.id )
     
     // ... and update that book's shelf property while adding it to a new array.
     let newBooks = [...books];
@@ -81,11 +77,15 @@ class BooksApp extends Component {
         allBooks: newBooks
     });
 
-    console.log(bookToMoveTitle + " to " + targetShelf);
-    BooksAPI.update(bookToMoveTitle, targetShelf);
+    BooksAPI.update(bookToMove, targetShelf);
   }
   
   render() {
+
+    let currentlyReadingBooks = this.state.allBooks.filter(b => b.shelf === "currentlyReading");
+    let wantToReadBooks = this.state.allBooks.filter(b => b.shelf === "wantToRead");
+    let readBooks = this.state.allBooks.filter(b => b.shelf === "read");
+
     return(
       <div className="list-books">
         <div className="list-books-title">
@@ -96,19 +96,19 @@ class BooksApp extends Component {
             <Bookshelf 
               title="Currently Reading"
               name="currentlyReading"
-              allBooks={this.state.allBooks}
+              booksInShelf={currentlyReadingBooks}
               onShelfChanged={this.handleShelfChange}
             />
             <Bookshelf 
               title="Want to Read"
               name="wantToRead"
-              allBooks={this.state.allBooks}
+              booksInShelf={wantToReadBooks}
               onShelfChanged={this.handleShelfChange}
             />
             <Bookshelf 
               title="Read"
               name="read"
-              allBooks={this.state.allBooks}
+              booksInShelf={readBooks}
               onShelfChanged={this.handleShelfChange}
             />
           </div>
