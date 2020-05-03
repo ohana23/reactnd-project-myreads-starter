@@ -66,31 +66,23 @@ class BooksApp extends Component {
   handleShelfChange = value => {
     console.log(this.state.allBooks);
 
-    let bookToMove = value[0];
+    let bookToMoveTitle = value[0];
     let targetShelf = value[1];
     let books = this.state.allBooks;
 
-    // Creates books array needed to update the state.
-    // books.forEach(b => {
-    //     if (b.title === bookToMove) {
-    //         console.log(b.title + " = " + bookToMove);
-    //     }
-    // })
+    // Find the index of the book to update...
+    let bookIndex = books.findIndex(b => b.title === bookToMoveTitle )
+    
+    // ... and update that book's shelf property while adding it to a new array.
+    let newBooks = [...books];
+    newBooks[bookIndex] = { ...newBooks[bookIndex], shelf: targetShelf }
 
-    let newBooks = books.filter(function(book) {
-        return book.title !== bookToMove;
-    })
+    this.setState({
+        allBooks: newBooks
+    });
 
-    // newBooks.concat()
-
-    console.log(newBooks);
-
-    this.setState(prevState => ({
-        allBooks: [ ...prevState.allBooks, ...newBooks]
-    }))
-
-    console.log(bookToMove + " to " + targetShelf);
-    BooksAPI.update(bookToMove, targetShelf);
+    console.log(bookToMoveTitle + " to " + targetShelf);
+    BooksAPI.update(bookToMoveTitle, targetShelf);
   }
   
   render() {
