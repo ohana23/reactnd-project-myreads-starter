@@ -9,7 +9,7 @@ class BookList extends Component {
     
     // Create a book object for each book that belongs in this list.
     this.props.booksInShelf.forEach((book) => {
-        console.log(book)
+        // console.log(book)
       books.push(<li key={book.id}>
                     <Book
                         book={book}

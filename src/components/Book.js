@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 class Book extends Component {
-    state = { value: this.props.book.shelf };
+    state = { value: this.props.book.shelf ? this.props.book.shelf : "none" };
 
     handleShelfChange = event => {
         this.setState({ value: event.target.value });
-        // this.props.onShelfChanged([this.props.title, event.target.value])
         this.props.onShelfChanged(this.props.book, event.target.value);
     }
 
@@ -20,10 +19,12 @@ class Book extends Component {
                         style={{ 
                             width: 128, 
                             height: 193, 
-                            backgroundImage: `url(${book.imageLinks.smallThumbnail})`}}>
+                            backgroundImage: `url(
+                                ${book.imageLinks ? book.imageLinks.smallThumbnail : ""}
+                            )`}}>
                     </div>
                     <div className="book-shelf-changer">
-                        <select onChange={this.handleShelfChange} value={this.state.value}>
+                        <select onChange={this.handleShelfChange} defaultValue={book.shelf}>
                             <option value="move" disabled>Move to...</option>
                             <option value="currentlyReading">Currently Reading</option>
                             <option value="wantToRead">Want to Read</option>
@@ -32,11 +33,19 @@ class Book extends Component {
                         </select>
                     </div>
                 </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.authors.join(', ')}</div>
+                <div className="book-title">
+                    {book.title ? book.title : "N/A"}</div>
+                <div className="book-authors">
+                    {book.authors ? book.authors.join(', ') : "N/A"}
+                </div>
             </div>
         );
     }
+}
+
+Book.propTypes = {
+    book: PropTypes.object.isRequired,
+    onShelfChanged: PropTypes.func.isRequired
 }
 
 export default Book;
