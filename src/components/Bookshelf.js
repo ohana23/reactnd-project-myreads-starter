@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
 import BookList from './BookList.js';
+import PropTypes from 'prop-types';
 
 class Bookshelf extends Component {
     render() {
         const { booksInShelf, title, onShelfChanged } = this.props;
-        // const booksInShelf = [];
-        // const shelfName = name;
-        
-        // Add books that belong to the current shelf.
-        // allBooks.forEach((book) => {
-        //   if (book.shelf === shelfName) {
-        //     booksInShelf.push(book);
-        //   }
-        // })
 
         return (
             <div className="bookshelf">
@@ -26,6 +18,12 @@ class Bookshelf extends Component {
             </div>
           );
     }
+}
+
+Bookshelf.propTypes = {
+    booksInShelf: PropTypes.array,
+    title: PropTypes.string.isRequired,
+    onShelfChanged: PropTypes.func.isRequired
 }
 
 export default Bookshelf;

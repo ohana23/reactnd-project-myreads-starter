@@ -122,6 +122,10 @@ button:active {
   padding: 80px 10px 20px;
 }
 
+.color-green {
+  color: #2e7d32;
+}
+
 /* books grid */
 
 .books-grid {
