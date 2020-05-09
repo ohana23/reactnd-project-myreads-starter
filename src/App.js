@@ -1,5 +1,4 @@
 import React from 'react';
-// import BooksApp from './components/BooksApp.js';
 import * as BooksAPI from './BooksAPI';
 import Search from './components/Search.js';
 import './App.css';
