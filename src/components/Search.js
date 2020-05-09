@@ -4,31 +4,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-
-
-
-
-
-// BUG: Search a book never added to the shelf, and change it to "read".
-//      Click back to your shelves. The book doesn't appear until refresh.
-// SOLUTION: Could it not be calling some function until a refresh? 
-//      Maybe the state needs to be forced to update w one of those React methods.
-// QUIRK: If the book was already on a shelf, you change it to "none" from within
-//      your shelf, then you search it and change it to "read", a refresh
-//      isn't needed. So it has something to do with books being newly added to the list!
-
-
-
-
-
-
-
-
-
-
-
-
-
 class Search extends Component {
     state = {
         books: [],
@@ -44,7 +19,6 @@ class Search extends Component {
             BooksAPI.search(input, 20).then(result => {
                 if (result.length > 0) {
                     result = this.changeBookshelfToUserShelf(result);
-                    console.log(result);
                     this.setState({ books: result, success: true });
                 } else {
                     this.setState({ books: [], success: false });
@@ -111,7 +85,7 @@ class Search extends Component {
                     </ol>
                 </div>
               )}
-                {!success && (<span><h2>Try searching with one of the following terms.</h2>
+                {!success && (<span><h2>Try searching one of the following terms. <span role="img" aria-label="detective searching emoji">🕵️‍♂️</span></h2>
                 <p>'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 
                     'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 
                     'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 
@@ -131,7 +105,7 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-    books: PropTypes.array,
+    books: PropTypes.array.isRequired,
     onShelfChanged: PropTypes.func.isRequired
 }
 
