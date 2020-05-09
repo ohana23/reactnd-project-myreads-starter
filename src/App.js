@@ -26,11 +26,9 @@ class App extends React.Component {
     let newBooks = [...books];
     newBooks[bookIndex] = { ...newBooks[bookIndex], shelf: targetShelf }
 
-    this.setState({
-        allBooks: newBooks
-    });
-
-    console.log(bookToMove.title + " to " + targetShelf)
+    this.setState(() => ({
+      allBooks: newBooks
+    }))
 
     BooksAPI.update(bookToMove, targetShelf);
   }
@@ -74,12 +72,11 @@ class App extends React.Component {
             <div className="open-search">
               <Link
                 to="/search"
-              >Add a book</Link>
+                ><button>Add a book</button></Link>
             </div>
             
           </div>
         )} />
-        
 
         <Route path="/search" render={() => (
           <Search 

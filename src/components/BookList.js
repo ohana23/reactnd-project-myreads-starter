@@ -3,13 +3,11 @@ import Book from './Book.js'
 import PropTypes from 'prop-types';
 
 class BookList extends Component {
-  
   render() {
     const books = [];
     
     // Create a book object for each book that belongs in this list.
     this.props.booksInShelf.forEach((book) => {
-        // console.log(book)
       books.push(<li key={book.id}>
                     <Book
                         book={book}
@@ -27,7 +25,7 @@ class BookList extends Component {
 }
 
 BookList.propTypes = {
-  booksInShelf: PropTypes.array,
+  booksInShelf: PropTypes.array.isRequired,
   onShelfChanged: PropTypes.func.isRequired
 }
 
